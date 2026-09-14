@@ -99,15 +99,10 @@ export function Sheet({ tabs, activeTab, onTabChange, snap, onSnapChange, childr
         <div className="sheet-handle" />
       </div>
 
-      <div className="sheet-tabs" role="tablist" aria-label="Panel sections">
+      <div className="sheet-tabs">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            type="button"
-            role="tab"
-            id={`sheet-tab-${tab.id}`}
-            aria-selected={activeTab === tab.id}
-            aria-controls={`sheet-panel-${tab.id}`}
             className={`sheet-tab${activeTab === tab.id ? " active" : ""}`}
             onClick={() => {
               onTabChange(tab.id);
@@ -121,9 +116,7 @@ export function Sheet({ tabs, activeTab, onTabChange, snap, onSnapChange, childr
         ))}
       </div>
 
-      <div className="sheet-body" role="tabpanel" id={`sheet-panel-${activeTab}`} aria-labelledby={`sheet-tab-${activeTab}`}>
-        {children}
-      </div>
+      <div className="sheet-body">{children}</div>
     </div>
   );
 }

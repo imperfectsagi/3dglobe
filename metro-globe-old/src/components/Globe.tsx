@@ -49,5 +49,5 @@ export const Globe = forwardRef<GlobeHandle, GlobeProps>(function Globe(
     clearRoute: () => sceneRef.current?.clearRoute(),
   }));
 
-  return <div ref={containerRef} className="globe-canvas" role="img" aria-label="Interactive 3D globe map of the Delhi Metro network. Use the on-screen zoom controls or the route planner to navigate; a 2D map view is also available from the top bar." />;
+  return <div ref={containerRef} className="globe-canvas" aria-label="Interactive 3D map of the Delhi Metro network" />;
 });

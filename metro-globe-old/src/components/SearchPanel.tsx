@@ -34,7 +34,6 @@ export function SearchPanel({ onSelectStation }: SearchPanelProps) {
           type="text"
           inputMode="search"
           placeholder="Search any of 243 stations…"
-          aria-label="Search stations"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           autoComplete="off"
@@ -65,7 +64,7 @@ export function SearchPanel({ onSelectStation }: SearchPanelProps) {
 
 export function StationRow({ station, onClick }: { station: MetroStation; onClick: () => void }) {
   return (
-    <button type="button" className="station-row" onClick={onClick}>
+    <button className="station-row" onClick={onClick}>
       <span className="station-row-dots">
         {station.lines.slice(0, 3).map((lid: string) => (
           <span key={lid} className="dot" style={{ background: lineById.get(lid)?.color ?? "#888" }} />

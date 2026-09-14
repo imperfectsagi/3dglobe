@@ -18,7 +18,7 @@ export function StationDetail({ station, onClose, onPlanFrom, onPlanTo }: Statio
             {station.latitude.toFixed(4)}°N, {station.longitude.toFixed(4)}°E
           </div>
         </div>
-        <button type="button" className="icon-btn" onClick={onClose} aria-label="Close">
+        <button className="icon-btn" onClick={onClose} aria-label="Close">
           <XIcon />
         </button>
       </div>
@@ -43,10 +43,10 @@ export function StationDetail({ station, onClose, onPlanFrom, onPlanTo }: Statio
       )}
 
       <div className="station-detail-actions">
-        <button type="button" className="primary-btn" onClick={onPlanTo}>
+        <button className="primary-btn" onClick={onPlanTo}>
           <RouteIcon /> Route here
         </button>
-        <button type="button" className="secondary-btn" onClick={onPlanFrom}>
+        <button className="secondary-btn" onClick={onPlanFrom}>
           Start here
         </button>
       </div>

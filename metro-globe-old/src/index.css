@@ -9,21 +9,8 @@
   --text-dim: #5c6784;
   --accent: #38bdf8;
   --accent-dim: rgba(56, 189, 248, 0.16);
-  --accent-border: rgba(56, 189, 248, 0.35);
-  --accent-contrast: #041018;
   --success: #22c55e;
   --danger: #ef4444;
-  --map-bg: #0a0f1c;
-  --map-water: #0c1930;
-  --map-line-dim-opacity: 0.16;
-  --app-bg-glow: #0d1524;
-  --surface-tint-1: rgba(255, 255, 255, 0.03);
-  --surface-tint-2: rgba(255, 255, 255, 0.04);
-  --surface-tint-3: rgba(255, 255, 255, 0.05);
-  --surface-tint-4: rgba(255, 255, 255, 0.06);
-  --surface-tint-5: rgba(255, 255, 255, 0.12);
-  --shadow-color: rgba(0, 0, 0, 0.4);
-  --shadow-color-soft: rgba(0, 0, 0, 0.35);
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 20px;
@@ -31,42 +18,6 @@
     -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, Helvetica,
     Arial, sans-serif;
   color-scheme: dark;
-}
-
-/*
- * Light theme overrides. Applied via [data-theme="light"] on <html>,
- * set by src/lib/use-theme.ts and persisted to localStorage. Every color
- * everywhere in the app is driven by these custom properties, so flipping
- * this block re-themes the whole UI (map, panels, buttons, search, route
- * views) without any component-level theme branching.
- */
-[data-theme="light"] {
-  --bg: #f3f5f9;
-  --surface: rgba(255, 255, 255, 0.88);
-  --surface-solid: #ffffff;
-  --border: rgba(30, 41, 63, 0.1);
-  --border-strong: rgba(30, 41, 63, 0.18);
-  --text: #141b2e;
-  --text-muted: #4b5670;
-  --text-dim: #7885a0;
-  --accent: #0072bc;
-  --accent-dim: rgba(0, 114, 188, 0.12);
-  --accent-border: rgba(0, 114, 188, 0.35);
-  --accent-contrast: #ffffff;
-  --success: #16a34a;
-  --danger: #dc2626;
-  --map-bg: #eef1f7;
-  --map-water: #dbe6f4;
-  --map-line-dim-opacity: 0.22;
-  --app-bg-glow: #ffffff;
-  --surface-tint-1: rgba(20, 27, 46, 0.03);
-  --surface-tint-2: rgba(20, 27, 46, 0.045);
-  --surface-tint-3: rgba(20, 27, 46, 0.06);
-  --surface-tint-4: rgba(20, 27, 46, 0.08);
-  --surface-tint-5: rgba(20, 27, 46, 0.14);
-  --shadow-color: rgba(30, 41, 63, 0.16);
-  --shadow-color-soft: rgba(30, 41, 63, 0.12);
-  color-scheme: light;
 }
 
 * {
@@ -88,7 +39,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
   overscroll-behavior: none;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
 button {
@@ -99,27 +49,13 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-/* Visually hidden but still available to assistive tech. */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 /* ---------- App shell ---------- */
 .app {
   position: relative;
   height: 100svh;
   width: 100vw;
   overflow: hidden;
-  background: var(--bg);
-  background: radial-gradient(ellipse at 50% 30%, var(--app-bg-glow, var(--bg)) 0%, var(--bg) 70%);
+  background: radial-gradient(ellipse at 50% 30%, #0d1524 0%, #070b14 70%);
 }
 
 .globe-canvas {
@@ -129,101 +65,6 @@ button {
 
 .globe-canvas canvas {
   display: block;
-}
-
-/* ---------- 2D metro map ---------- */
-.metro-map-wrap {
-  position: absolute;
-  inset: 0;
-  background: var(--map-bg);
-}
-
-.metro-map-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-  touch-action: none;
-  cursor: grab;
-}
-
-.metro-map-svg:active {
-  cursor: grabbing;
-}
-
-.metro-line-path {
-  transition: opacity 0.25s ease, stroke-width 0.25s ease;
-  vector-effect: non-scaling-stroke;
-}
-
-.metro-route-outline {
-  color: var(--text);
-  transition: opacity 0.25s ease;
-  filter: drop-shadow(0 0 2px var(--shadow-color));
-}
-
-.metro-route-arrow {
-  fill: var(--bg);
-  stroke: var(--text);
-  stroke-width: 1;
-}
-
-.metro-station {
-  cursor: pointer;
-  outline: none;
-}
-
-.metro-station-dot {
-  stroke: var(--map-bg);
-  stroke-width: 1.5;
-  transition: opacity 0.25s ease, r 0.15s ease;
-}
-
-.metro-station-dot.interchange {
-  fill: var(--surface-solid);
-  stroke: var(--text);
-  stroke-width: 2;
-}
-
-.metro-station.dimmed .metro-station-dot {
-  opacity: 0.22;
-}
-
-.metro-station.on-route .metro-station-dot {
-  stroke: var(--text);
-  stroke-width: 2;
-}
-
-.metro-station:focus-visible .metro-station-dot {
-  stroke: var(--accent);
-  stroke-width: 3;
-}
-
-.metro-endpoint-ring {
-  fill: none;
-  stroke: var(--text);
-  stroke-width: 2;
-  stroke-dasharray: 3 3;
-}
-
-.metro-endpoint-ring.from {
-  stroke: var(--success);
-}
-
-.metro-endpoint-ring.to {
-  stroke: var(--danger);
-}
-
-.metro-station-label {
-  font-size: 11px;
-  font-weight: 600;
-  fill: var(--text);
-  paint-order: stroke;
-  stroke: var(--map-bg);
-  stroke-width: 3px;
-  stroke-linejoin: round;
-  dominant-baseline: middle;
-  pointer-events: none;
-  user-select: none;
 }
 
 /* ---------- Top bar ---------- */
@@ -236,7 +77,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
   padding: 14px 16px;
   padding-top: max(14px, env(safe-area-inset-top));
   pointer-events: none;
@@ -244,7 +84,6 @@ button {
 
 .topbar > * {
   pointer-events: auto;
-  min-width: 0;
 }
 
 .brand {
@@ -257,27 +96,22 @@ button {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 9px 16px;
-  min-width: 0;
-  overflow: hidden;
 }
 
 .brand-title {
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.2px;
-  white-space: nowrap;
 }
 
 .brand-sub {
   font-size: 11px;
   color: var(--text-dim);
-  white-space: nowrap;
 }
 
 .icon-btn {
   width: 40px;
   height: 40px;
-  flex-shrink: 0;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -292,7 +126,7 @@ button {
 }
 
 .icon-btn:hover {
-  background: var(--accent-dim);
+  background: rgba(56, 189, 248, 0.1);
   border-color: var(--border-strong);
 }
 
@@ -300,43 +134,8 @@ button {
   transform: scale(0.94);
 }
 
-/* ---------- View toggle & theme toggle ---------- */
-.topbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.view-toggle-btn {
-  width: auto;
-  padding: 0 14px 0 12px;
-  gap: 7px;
-  border-radius: 999px;
-}
-
-.view-toggle-label {
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-@media (max-width: 480px) {
-  .brand-sub {
-    display: none;
-  }
-  .view-toggle-btn {
-    width: 40px;
-    padding: 0;
-  }
-  .view-toggle-label {
-    display: none;
-  }
-}
-
 /* ---------- Zoom controls ---------- */
-.zoom-controls,
-.map-zoom-controls {
+.zoom-controls {
   position: absolute;
   right: 16px;
   bottom: calc(var(--sheet-visible-offset, 120px) + 16px);
@@ -357,7 +156,7 @@ button {
   border-radius: var(--radius-sm);
   padding: 8px 12px;
   font-size: 13px;
-  box-shadow: 0 8px 24px var(--shadow-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   max-width: 220px;
 }
 
@@ -391,7 +190,7 @@ button {
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border-strong);
   border-radius: 20px 20px 0 0;
-  box-shadow: 0 -8px 30px var(--shadow-color-soft);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.35);
   display: flex;
   flex-direction: column;
   touch-action: none;
@@ -470,8 +269,7 @@ button {
     display: none;
   }
 
-  .zoom-controls,
-  .map-zoom-controls {
+  .zoom-controls {
     bottom: 16px;
   }
 }
@@ -484,7 +282,7 @@ button {
 
 .search-input {
   width: 100%;
-  background: var(--surface-tint-2);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   color: var(--text);
@@ -529,7 +327,7 @@ button {
 
 .station-row:hover,
 .station-row:active {
-  background: var(--surface-tint-3);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .station-row-dots {
@@ -568,7 +366,7 @@ button {
 .interchange-badge {
   font-size: 10px;
   color: var(--accent);
-  border: 1px solid var(--accent-border);
+  border: 1px solid rgba(56, 189, 248, 0.35);
   border-radius: 5px;
   padding: 1px 5px;
   flex-shrink: 0;
@@ -611,7 +409,7 @@ button {
 }
 
 .line-item:hover {
-  background: var(--surface-tint-3);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .line-item.active {
@@ -653,7 +451,7 @@ button {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: var(--surface-tint-2);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   padding: 11px 12px;
@@ -690,7 +488,7 @@ button {
   height: 30px;
   border-radius: 50%;
   border: 1px solid var(--border-strong);
-  background: var(--surface-tint-2);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
   display: flex;
   align-items: center;
@@ -710,26 +508,11 @@ button {
   overflow-y: auto;
 }
 
-.route-direction-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.2px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-
-.route-direction-station {
-  color: var(--text);
-}
-
 .route-summary {
   display: flex;
   align-items: center;
   gap: 14px;
-  background: var(--surface-tint-2);
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   padding: 14px;
@@ -767,7 +550,7 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--surface-tint-3);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
   padding: 5px 10px 5px 8px;
   font-size: 12.5px;
@@ -838,7 +621,7 @@ button {
   padding: 11px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-strong);
-  background: var(--surface-tint-1);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--text-muted);
   font-size: 13.5px;
   font-weight: 500;
@@ -847,7 +630,7 @@ button {
 }
 
 .clear-route-btn:hover {
-  background: var(--surface-tint-4);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* ---------- Station detail panel ---------- */
@@ -887,7 +670,7 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
-  background: var(--surface-tint-3);
+  background: rgba(255, 255, 255, 0.05);
   border-radius: 999px;
   padding: 6px 12px 6px 9px;
   font-size: 12.5px;
@@ -906,7 +689,7 @@ button {
   border-radius: var(--radius-md);
   border: none;
   background: var(--accent);
-  color: var(--accent-contrast);
+  color: #041018;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -924,7 +707,7 @@ button {
   padding: 12px 16px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border-strong);
-  background: var(--surface-tint-2);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text);
   font-size: 14px;
   font-weight: 500;
@@ -939,7 +722,7 @@ button {
 
 .sheet-body::-webkit-scrollbar-thumb,
 .route-suggestions::-webkit-scrollbar-thumb {
-  background: var(--surface-tint-5);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 3px;
 }
 
@@ -960,7 +743,7 @@ button {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 3px solid var(--accent-dim);
+  border: 3px solid rgba(56, 189, 248, 0.2);
   border-top-color: var(--accent);
   animation: spin 0.9s linear infinite;
 }

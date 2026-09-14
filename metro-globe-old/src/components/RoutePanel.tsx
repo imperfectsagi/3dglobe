@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { findRoute, stations, TIMING_MODEL_NOTE, type MetroStation, type RouteResult } from "../lib/metro-data";
+import { findRoute, stations, TIMING_MODEL_NOTE, type MetroStation } from "../lib/metro-data";
 import { formatKm, formatMinutes } from "../lib/format";
 import { ClockIcon, InfoIcon, InterchangeIcon, SwapIcon } from "./icons";
 
@@ -8,7 +8,7 @@ interface RoutePanelProps {
   toStation: MetroStation | null;
   onSetFrom: (s: MetroStation | null) => void;
   onSetTo: (s: MetroStation | null) => void;
-  onRouteComputed: (route: RouteResult | null) => void;
+  onRouteComputed: (stationIds: string[] | null) => void;
 }
 
 type ActiveField = "from" | "to" | null;
@@ -24,7 +24,11 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
   }, [fromStation, toStation]);
 
   useEffect(() => {
-    onRouteComputed(route);
+    if (route) {
+      onRouteComputed([route.steps[0].from.id, ...route.steps.map((s) => s.to.id)]);
+    } else {
+      onRouteComputed(null);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [route]);
 
@@ -54,28 +58,13 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
     onSetTo(f);
   };
 
-  const clearRoute = () => {
-    onSetFrom(null);
-    onSetTo(null);
-    setFromQuery("");
-    setToQuery("");
-    setActiveField(null);
-  };
-
-  const totalStops = route ? route.steps.length + 1 : 0;
-
   return (
     <div>
       <div className="route-inputs">
         <div className="route-field">
-          <span className="route-dot from" aria-hidden="true" />
-          <label className="sr-only" htmlFor="route-from-input">
-            From station
-          </label>
+          <span className="route-dot from" />
           <input
-            id="route-from-input"
-            placeholder="From station (e.g. Pratap Nagar)"
-            aria-label="From station"
+            placeholder="From station"
             value={activeField === "from" ? fromQuery : (fromStation?.name ?? "")}
             onFocus={() => {
               setActiveField("from");
@@ -86,9 +75,9 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
         </div>
 
         {activeField === "from" && suggestions.length > 0 && (
-          <div className="route-suggestions" role="listbox" aria-label="From station suggestions">
+          <div className="route-suggestions">
             {suggestions.map((s) => (
-              <button key={s.id} className="station-row" onClick={() => pick(s)} role="option" aria-selected="false">
+              <button key={s.id} className="station-row" onClick={() => pick(s)}>
                 <span className="station-row-text">
                   <div className="station-row-name">{s.name}</div>
                 </span>
@@ -97,19 +86,14 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
           </div>
         )}
 
-        <button className="swap-btn" onClick={swap} aria-label="Swap from and to stations" style={{ alignSelf: "center" }}>
+        <button className="swap-btn" onClick={swap} aria-label="Swap from and to" style={{ alignSelf: "center" }}>
           <SwapIcon />
         </button>
 
         <div className="route-field">
-          <span className="route-dot to" aria-hidden="true" />
-          <label className="sr-only" htmlFor="route-to-input">
-            To station
-          </label>
+          <span className="route-dot to" />
           <input
-            id="route-to-input"
-            placeholder="To station (e.g. Rajiv Chowk)"
-            aria-label="To station"
+            placeholder="To station"
             value={activeField === "to" ? toQuery : (toStation?.name ?? "")}
             onFocus={() => {
               setActiveField("to");
@@ -120,9 +104,9 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
         </div>
 
         {activeField === "to" && suggestions.length > 0 && (
-          <div className="route-suggestions" role="listbox" aria-label="To station suggestions">
+          <div className="route-suggestions">
             {suggestions.map((s) => (
-              <button key={s.id} className="station-row" onClick={() => pick(s)} role="option" aria-selected="false">
+              <button key={s.id} className="station-row" onClick={() => pick(s)}>
                 <span className="station-row-text">
                   <div className="station-row-name">{s.name}</div>
                 </span>
@@ -130,26 +114,14 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
             ))}
           </div>
         )}
-
-        {(fromStation || toStation) && (
-          <button type="button" className="clear-route-btn" onClick={clearRoute}>
-            Reset / clear route
-          </button>
-        )}
       </div>
 
       {fromStation && toStation && fromStation.id === toStation.id && (
         <div className="empty-hint">Pick two different stations to plan a route.</div>
       )}
 
-      {route && fromStation && toStation && (
+      {route && (
         <>
-          <div className="route-direction-header">
-            <span className="route-direction-station">{fromStation.name}</span>
-            <span className="route-arrow" aria-hidden="true">→</span>
-            <span className="route-direction-station">{toStation.name}</span>
-          </div>
-
           <div className="route-summary">
             <div>
               <div className="route-summary-time tabular">
@@ -158,18 +130,17 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
               </div>
             </div>
             <div className="route-summary-meta">
-              {formatKm(route.totalDistanceKm)} km · {totalStops} stops ·{" "}
+              {formatKm(route.totalDistanceKm)} km · {route.steps.length} stops ·{" "}
               {route.interchangeCount === 0
                 ? "no interchange"
-                : `${route.interchangeCount} line change${route.interchangeCount > 1 ? "s" : ""}`}
+                : `${route.interchangeCount} interchange${route.interchangeCount > 1 ? "s" : ""}`}
             </div>
           </div>
 
-          <div className="section-label">Lines used, in order</div>
           <div className="route-line-sequence">
             {route.lineSequence.map((line, i) => (
               <span key={`${line.id}-${i}`} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                {i > 0 && <span className="route-arrow" aria-hidden="true">→</span>}
+                {i > 0 && <span className="route-arrow">→</span>}
                 <span className="route-line-pill">
                   <span className="dot" style={{ background: line.color }} />
                   {line.name.replace(/\s*\(Line.*?\)/, "")}
@@ -178,7 +149,6 @@ export function RoutePanel({ fromStation, toStation, onSetFrom, onSetTo, onRoute
             ))}
           </div>
 
-          <div className="section-label">Station-by-station, in travel direction</div>
           <div className="route-steps">
             {route.steps.map((step, i) => (
               <div

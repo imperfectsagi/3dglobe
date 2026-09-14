@@ -1,11 +1,10 @@
-# Delhi Metro — Network Map
+# Delhi Metro — 3D Network Map
 
-An interactive map of the entire Delhi Metro network: 243 stations across 13
-lines, built with React + Three.js. Opens on a 2D schematic map by default,
-with an optional 3D globe view. Search stations, plan a route between any two
-stations with an estimated travel time, and explore the network by line.
-Dark and light themes, mobile-first, and runs entirely in the browser — no
-backend, no API keys, no database.
+An interactive 3D globe of the entire Delhi Metro network: 243 stations across
+13 lines, built with React + Three.js. Search stations, plan a route between
+any two stations with an estimated travel time, and explore the network by
+line. Mobile-first, and runs entirely in the browser — no backend, no API
+keys, no database.
 
 ## Run locally
 
@@ -51,26 +50,15 @@ fits comfortably in Vercel's free hobby tier with no serverless functions.
 - `src/data/delhi-metro.json` — station list, line colors, connections, and
   interchange points for the Delhi Metro network (DMRC Phase IV, verified
   March 2026).
-- `src/lib/geo.ts` — lat/lng → 3D sphere coordinate conversion (used by the
-  3D globe).
-- `src/lib/map-projection.ts` — lat/lng → 2D SVG coordinate projection (used
-  by the 2D map), aspect-correct and longitude-corrected for Delhi's latitude.
+- `src/lib/geo.ts` — lat/lng → 3D sphere coordinate conversion.
 - `src/lib/metro-data.ts` — typed data loader, travel-time estimation per
   segment, and a Dijkstra shortest-path router (time-weighted, penalizes line
   changes).
-- `src/lib/globe-scene.ts` — the Three.js scene for the 3D view: Earth
-  sphere, station markers, line tubes, camera controls (drag/pinch/wheel to
-  rotate and zoom), hover/click raycasting, route highlighting.
-- `src/lib/use-theme.ts` — dark/light theme state, persisted to
-  `localStorage`, applied via `data-theme` on `<html>`.
-- `src/components/MetroMap.tsx` — the default 2D view: an SVG schematic map
-  built from the real station coordinates, with pan/zoom, route highlighting,
-  and dimming of unrelated lines/stations.
-- `src/components/Globe.tsx` — the optional 3D view, toggled from the top
-  bar. Shares the same From/To/route/selected-station state as the 2D map,
-  so switching views never loses your search.
-- `src/components/` — the rest of the UI shell: a draggable bottom sheet
-  (side panel on desktop) with Search, Plan route, and Lines tabs.
+- `src/lib/globe-scene.ts` — the Three.js scene: Earth sphere, station
+  markers, line tubes, camera controls (drag/pinch/wheel to rotate and zoom),
+  hover/click raycasting, route highlighting.
+- `src/components/` — the UI shell: a draggable bottom sheet (side panel on
+  desktop) with Search, Plan route, and Lines tabs.
 
 ## About the route times
 

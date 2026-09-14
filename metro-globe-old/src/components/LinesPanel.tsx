@@ -9,14 +9,12 @@ interface LinesPanelProps {
 export function LinesPanel({ activeLine, onToggleLine }: LinesPanelProps) {
   return (
     <div>
-      <div className="section-label">{lines.length} lines · tap to highlight on the map</div>
+      <div className="section-label">{lines.length} lines · tap to highlight on globe</div>
       {lines.map((line) => (
         <button
           key={line.id}
-          type="button"
           className={`line-item${activeLine === line.id ? " active" : ""}`}
           onClick={() => onToggleLine(line.id)}
-          aria-pressed={activeLine === line.id}
         >
           <span className="line-swatch" style={{ background: line.color }} />
           <span className="line-item-text">
