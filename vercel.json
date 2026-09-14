@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd metro-globe && npm run build",
+  "outputDirectory": "metro-globe/dist",
+  "installCommand": "cd metro-globe && npm install"
+}
